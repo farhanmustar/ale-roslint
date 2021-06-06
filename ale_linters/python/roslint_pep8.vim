@@ -2,6 +2,7 @@
 " Description: roslint_pep8 for python files
 
 call ale#Set('python_roslint_pep8_executable', 'rosrun')
+call ale#Set('python_roslint_pep8_options', '')
 
 function! ale_linters#python#roslint_pep8#GetExecutable(buffer) abort
     let pep8_executable = ale#Var(a:buffer, 'python_roslint_pep8_executable')
@@ -20,7 +21,9 @@ function! ale_linters#python#roslint_pep8#GetExecutable(buffer) abort
 endfunction
 
 function! ale_linters#python#roslint_pep8#GetCommand(buffer) abort
-    return '%e roslint pep8 %s'
+    let l:options = ale#Var(a:buffer, 'python_roslint_pep8_options')
+
+    return '%e roslint pep8' . ale#Pad(l:options) . ' %s'
 endfunction
 
 call ale#linter#Define('python', {
