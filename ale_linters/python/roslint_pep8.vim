@@ -1,23 +1,22 @@
 " Author: Farhan Mustar <farhanmustar@gmail.com>
 " Description: roslint_pep8 for python files
 
-call ale#Set('python_roslint_pep8_executable', 'rosrun roslint pep8')
+call ale#Set('python_roslint_pep8_executable', 'rosrun')
 
 function! ale_linters#python#roslint_pep8#GetExecutable(buffer) abort
-  " TODO: check for roslint package available check rosrun and rospack then rospack find roslint
-  let pep8_exe = ale#Var(a:buffer, 'python_roslint_pep8_executable')
+  let pep8_executable = ale#Var(a:buffer, 'python_roslint_pep8_executable')
   if !executable('rosrun') || !executable('rospack')
     return ''
   endif
-  silent system('rospack find roslint')
+  silent call system('rospack find roslint')
   if v:shell_error != 0
     return ''
   endif
-  return pep8_exe
+  return pep8_executable
 endfunction
 
 function! ale_linters#python#roslint_pep8#GetCommand(buffer) abort
-  return '%e %s'
+  return '%e roslint pep8 %s'
 endfunction
 
 call ale#linter#Define('python', {
